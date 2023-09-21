@@ -22,7 +22,7 @@ It is a simple application that contains one page. This page is a to-do list con
 
 
 #### THE LINK OF PAGE:
-[CRUD_Aplication]([https://choosealicense.com/licenses/mit/](https://naeemabsharat.github.io/CRUD_Application/)https://naeemabsharat.github.io/CRUD_Application/)
+[CRUD_Aplication](https://naeemabsharat.github.io/CRUD_Application/)
 
 
 
