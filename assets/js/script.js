@@ -93,5 +93,27 @@ document.querySelector("#Task-list").addEventListener("click", (e) =>{
 });
 
 
+// Local code---------------------------
+// Check if local storage is supported
+function isLocalStorageSupported() {
+    try {
+        localStorage.setItem('test', 'test');
+        localStorage.removeItem('test');
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+// Check if local storage is supported and show/hide the project accordingly
+if (isLocalStorageSupported()) {
+    document.getElementById('project').style.display = 'block';
+} else {
+    alert('Your browser does not support local storage. The project cannot be displayed.');
+}
+
+
+
+
 
 
