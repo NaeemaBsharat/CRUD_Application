@@ -27,6 +27,8 @@ It is a simple application that contains one page. This page is a to-do list con
 
 #### CRUD Page:
 
+<img src="https://github.com/NaeemaBsharat/CRUD_Application/assets/122006025/99b8cdd6-c3db-4661-b8c1-57e2d4093f90" width="300">
+
 
 
 
