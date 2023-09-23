@@ -1,10 +1,134 @@
-var selectedRow=null;function showAlert(e,t){var l=document.createElement("div"),t=(l.className="alert alert-"+t,l.appendChild(document.createTextNode(e)),document.querySelector(".container")),e=document.querySelector(".main");t.insertBefore(l,e),setTimeout(()=>document.querySelector(".alert").remove(),3e3)}function clearFields(){document.querySelector("Task").value="",document.querySelector("Day").value="",document.querySelector("Time").value=""}function isLocalStorageSupported(){try{return localStorage.setItem("test","test"),localStorage.removeItem("test"),!0}catch(e){return!1}}document.querySelector("#Task-form").addEventListener("submit",e=>{e.preventDefault();var t,l,e=document.querySelector("#Task").value,r=document.querySelector("#Day").value,n=document.querySelector("#Time").value;""==e||""==r||""==n?showAlert("please fill all fields","danger"):(null==selectedRow?(t=document.querySelector("#Task-list"),(l=document.createElement("tr")).innerHTML=`
-    <td>${e}</td>
-    <td>${r}</td>
-    <td>${n}</td>
+var selectedRow = null;
+
+
+// showing alerts--------------------------------//
+
+function showAlert(message, className) {
+    const div = document.createElement("div");
+    div.className = `alert alert-${className}`;
+
+    div.appendChild(document.createTextNode(message));
+    const container = document.querySelector(".container");
+    const main = document.querySelector(".main");
+    container.insertBefore(div, main);
+
+
+    setTimeout(() => document.querySelector(".alert").remove(), 3000);
+
+}
+
+// clear all data code------------------------------//
+
+function clearFields() {
+    document.querySelector("Task").value = "";
+    document.querySelector("Day").value = "";
+    document.querySelector("Time").value = "";
+
+}
+
+// ADD data code ---------------------------------//
+
+document.querySelector("#Task-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+
+
+    const Task = document.querySelector("#Task").value;
+    const Day = document.querySelector("#Day").value;
+    const Time = document.querySelector("#Time").value;
+    const Slug = createSlug(Task); // Generate the slug from the task name
+
+    if (Task == "" || Day == "" || Time == "") {
+        showAlert("please fill all fields", "danger");
+    }
+    else {
+        if (selectedRow == null) {
+            const list = document.querySelector("#Task-list");
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+    <td>${Task}</td>
+    <td>${Day}</td>
+    <td>${Time}</td>
+    <td class="slug">${Slug}</td> <!-- Display the slug -->
     <td>
         <a href="#" class="btn btn-outline-info btn-sm edit">Edit</a>
         <a href="#" class="btn btn-danger btn-sm delete">Delete</a>
 
     
-    `,t.appendChild(l),selectedRow=null,showAlert("task Added","success")):(selectedRow.children[0].textContent=e,selectedRow.children[1].textContent=r,selectedRow.children[2].textContent=n,selectedRow=null,showAlert("Task Edited","succ")),clearFields())}),document.querySelector("#Task-list").addEventListener("click",e=>{(target=e.target).classList.contains("edit")&&(selectedRow=target.parentElement.parentElement,document.querySelector("#Task").value=selectedRow.children[0].textContent,document.querySelector("#Day").value=selectedRow.children[1].textContent,document.querySelector("#Time").value=selectedRow.children[2].textContent)}),document.querySelector("#Task-list").addEventListener("click",e=>{(target=e.target).classList.contains("delete")&&(target.parentElement.parentElement.remove(),showAlert("Task Deleted","danger"))}),isLocalStorageSupported()?document.getElementById("project").style.display="block":alert("Your browser does not support local storage. The project cannot be displayed.");
+    `;
+            list.appendChild(row);
+            selectedRow = null;
+            showAlert("task Added", "success");
+        }
+        else {
+            selectedRow.children[0].textContent = Task;
+            selectedRow.children[1].textContent = Day;
+            selectedRow.children[2].textContent = Time;
+            selectedRow.children[3].textContent = Slug; // Update the slug
+            selectedRow = null;
+            showAlert("Task Edited", "succ");
+
+        }
+        clearFields();
+    }
+});
+
+// Edit Data code---------------------//
+
+document.querySelector("#Task-list").addEventListener("click", (e) => {
+    target = e.target;
+    if (target.classList.contains("edit")) {
+        selectedRow = target.parentElement.parentElement;
+        document.querySelector("#Task").value = selectedRow.children[0].textContent;
+        document.querySelector("#Day").value = selectedRow.children[1].textContent;
+        document.querySelector("#Time").value = selectedRow.children[2].textContent;
+    }
+
+});
+
+// Delete data code------------------------//
+document.querySelector("#Task-list").addEventListener("click", (e) => {
+    target = e.target;
+    if (target.classList.contains("delete")) {
+        target.parentElement.parentElement.remove();
+        showAlert("Task Deleted", "danger");
+    }
+});
+
+
+// Function to create a slug from a string
+function createSlug(text) {
+    return text
+        .toLowerCase() // Convert to lowercase
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/[^a-z0-9-]/g, '') // Remove special characters
+        .replace(/-+/g, '-') // Remove consecutive hyphens
+        .substring(0, 50); // Limit the length of the slug
+}
+
+
+
+
+// Local code---------------------------
+
+function isLocalStorageSupported() {
+    try {
+        localStorage.setItem('test', 'test');
+        localStorage.removeItem('test');
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+if (isLocalStorageSupported()) {
+    document.getElementById('project').style.display = 'block';
+} else {
+    alert('Your browser does not support local storage. The project cannot be displayed.');
+}
+
+
+
+
+
+
