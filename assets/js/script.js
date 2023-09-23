@@ -26,52 +26,83 @@ function clearFields() {
 
 }
 
+
+// Function to generate a unique slug
+function generateUniqueSlug(taskName) {
+    let slug = createSlug(taskName);
+    const slugElements = document.querySelectorAll('.slug');
+
+    let isUnique = true;
+        // Check if the slug is unique
+        for (const element of slugElements) {
+            if (element.textContent === slug) {
+                isUnique = false;
+                break;
+            }
+        }
+    
+        if (!isUnique) {
+            showAlert("Task name is not unique. Please enter another name.", "danger");
+            return null; 
+        }
+    
+        return slug;
+    }
+
+
 // ADD data code ---------------------------------//
 
 document.querySelector("#Task-form").addEventListener("submit", (e) => {
     e.preventDefault();
 
-
     const Task = document.querySelector("#Task").value;
     const Day = document.querySelector("#Day").value;
     const Time = document.querySelector("#Time").value;
-    const Slug = createSlug(Task); // Generate the slug from the task name
+    
+    const Slug = generateUniqueSlug(Task); // Generate and check slug for uniqueness
+    
+
+    if (Slug === null) {
+        // If slug is not unique, do not proceed
+        return;
+    }
+
 
     if (Task == "" || Day == "" || Time == "") {
-        showAlert("please fill all fields", "danger");
-    }
-    else {
+        showAlert("Please fill all fields", "danger");
+    } else {
+        
+        
+
         if (selectedRow == null) {
             const list = document.querySelector("#Task-list");
             const row = document.createElement("tr");
 
             row.innerHTML = `
-    <td>${Task}</td>
-    <td>${Day}</td>
-    <td>${Time}</td>
-    <td class="slug">${Slug}</td> <!-- Display the slug -->
-    <td>
-        <a href="#" class="btn btn-outline-info btn-sm edit">Edit</a>
-        <a href="#" class="btn btn-danger btn-sm delete">Delete</a>
-
-    
-    `;
+                <td class="slug">${Slug}</td>
+                <td>${Day}</td>
+                <td>${Time}</td>
+               
+                <td>
+                    <a href="#" class="btn btn-outline-info btn-sm edit">Edit</a>
+                    <a href="#" class="btn btn-danger btn-sm delete">Delete</a>
+                </td>
+            `;
             list.appendChild(row);
             selectedRow = null;
-            showAlert("task Added", "success");
-        }
-        else {
+            showAlert("Task Added", "success");
+        } else {
             selectedRow.children[0].textContent = Task;
             selectedRow.children[1].textContent = Day;
             selectedRow.children[2].textContent = Time;
-            selectedRow.children[3].textContent = Slug; // Update the slug
             selectedRow = null;
-            showAlert("Task Edited", "succ");
-
+            showAlert("Task Edited", "success");
         }
         clearFields();
     }
 });
+
+
 
 // Edit Data code---------------------//
 
@@ -82,6 +113,7 @@ document.querySelector("#Task-list").addEventListener("click", (e) => {
         document.querySelector("#Task").value = selectedRow.children[0].textContent;
         document.querySelector("#Day").value = selectedRow.children[1].textContent;
         document.querySelector("#Time").value = selectedRow.children[2].textContent;
+       
     }
 
 });
@@ -99,13 +131,12 @@ document.querySelector("#Task-list").addEventListener("click", (e) => {
 // Function to create a slug from a string
 function createSlug(text) {
     return text
-        .toLowerCase() // Convert to lowercase
-        .replace(/\s+/g, '-') // Replace spaces with hyphens
-        .replace(/[^a-z0-9-]/g, '') // Remove special characters
-        .replace(/-+/g, '-') // Remove consecutive hyphens
-        .substring(0, 50); // Limit the length of the slug
+        .toLowerCase() 
+        .replace(/\s+/g, '-') 
+        .replace(/[^a-z0-9-]/g, '') 
+        .replace(/-+/g, '-') 
+        .substring(0, 50); 
 }
-
 
 
 
