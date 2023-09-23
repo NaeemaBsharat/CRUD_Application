@@ -152,6 +152,7 @@ function isLocalStorageSupported() {
     }
 }
 
+
 if (isLocalStorageSupported()) {
     document.getElementById('project').style.display = 'block';
 } else {
