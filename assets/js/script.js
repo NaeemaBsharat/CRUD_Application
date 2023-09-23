@@ -35,6 +35,7 @@ document.querySelector("#Task-form").addEventListener("submit", (e) => {
     const Task = document.querySelector("#Task").value;
     const Day = document.querySelector("#Day").value;
     const Time = document.querySelector("#Time").value;
+    const Slug = createSlug(Task); // Generate the slug from the task name
 
     if (Task == "" || Day == "" || Time == "") {
         showAlert("please fill all fields", "danger");
@@ -48,6 +49,7 @@ document.querySelector("#Task-form").addEventListener("submit", (e) => {
     <td>${Task}</td>
     <td>${Day}</td>
     <td>${Time}</td>
+    <td class="slug">${Slug}</td> <!-- Display the slug -->
     <td>
         <a href="#" class="btn btn-outline-info btn-sm edit">Edit</a>
         <a href="#" class="btn btn-danger btn-sm delete">Delete</a>
@@ -62,6 +64,7 @@ document.querySelector("#Task-form").addEventListener("submit", (e) => {
             selectedRow.children[0].textContent = Task;
             selectedRow.children[1].textContent = Day;
             selectedRow.children[2].textContent = Time;
+            selectedRow.children[3].textContent = Slug; // Update the slug
             selectedRow = null;
             showAlert("Task Edited", "succ");
 
@@ -91,6 +94,20 @@ document.querySelector("#Task-list").addEventListener("click", (e) => {
         showAlert("Task Deleted", "danger");
     }
 });
+
+
+// Function to create a slug from a string
+function createSlug(text) {
+    return text
+        .toLowerCase() // Convert to lowercase
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/[^a-z0-9-]/g, '') // Remove special characters
+        .replace(/-+/g, '-') // Remove consecutive hyphens
+        .substring(0, 50); // Limit the length of the slug
+}
+
+
+
 
 // Local code---------------------------
 
