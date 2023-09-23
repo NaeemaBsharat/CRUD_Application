@@ -28,6 +28,7 @@ function clearFields() {
 
 
 // Function to generate a unique slug
+
 function generateUniqueSlug(taskName) {
     let slug = createSlug(taskName);
     const slugElements = document.querySelectorAll('.slug');
@@ -82,7 +83,6 @@ document.querySelector("#Task-form").addEventListener("submit", (e) => {
                 <td class="slug">${Slug}</td>
                 <td>${Day}</td>
                 <td>${Time}</td>
-               
                 <td>
                     <a href="#" class="btn btn-outline-info btn-sm edit">Edit</a>
                     <a href="#" class="btn btn-danger btn-sm delete">Delete</a>
