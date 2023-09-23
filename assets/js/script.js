@@ -6,4 +6,80 @@ var selectedRow=null;function showAlert(e,t){var l=document.createElement("div")
                     <a href="#" class="btn btn-outline-info btn-sm edit">Edit</a>
                     <a href="#" class="btn btn-danger btn-sm delete">Delete</a>
                 </td>
-            `,t.appendChild(l),selectedRow=null,showAlert("Task Added","success")):(selectedRow.children[0].textContent=e,selectedRow.children[1].textContent=r,selectedRow.children[2].textContent=n,selectedRow=null,showAlert("Task Edited","success")),clearFields()))}),document.querySelector("#Task-list").addEventListener("click",e=>{(target=e.target).classList.contains("edit")&&(selectedRow=target.parentElement.parentElement,document.querySelector("#Task").value=selectedRow.children[0].textContent,document.querySelector("#Day").value=selectedRow.children[1].textContent,document.querySelector("#Time").value=selectedRow.children[2].textContent)}),document.querySelector("#Task-list").addEventListener("click",e=>{(target=e.target).classList.contains("delete")&&(target.parentElement.parentElement.remove(),showAlert("Task Deleted","danger"))}),isLocalStorageSupported()?document.getElementById("project").style.display="block":alert("Your browser does not support local storage. The project cannot be displayed.");
+            `;
+            list.appendChild(row);
+            selectedRow = null;
+            showAlert("Task Added", "success");
+        } else {
+            selectedRow.children[0].textContent = Task;
+            selectedRow.children[1].textContent = Day;
+            selectedRow.children[2].textContent = Time;
+            selectedRow = null;
+            showAlert("Task Edited", "success");
+        }
+        clearFields();
+    }
+});
+
+
+
+// Edit Data code---------------------//
+
+document.querySelector("#Task-list").addEventListener("click", (e) => {
+    target = e.target;
+    if (target.classList.contains("edit")) {
+        selectedRow = target.parentElement.parentElement;
+        document.querySelector("#Task").value = selectedRow.children[0].textContent;
+        document.querySelector("#Day").value = selectedRow.children[1].textContent;
+        document.querySelector("#Time").value = selectedRow.children[2].textContent;
+       
+    }
+
+});
+
+// Delete data code------------------------//
+document.querySelector("#Task-list").addEventListener("click", (e) => {
+    target = e.target;
+    if (target.classList.contains("delete")) {
+        target.parentElement.parentElement.remove();
+        showAlert("Task Deleted", "danger");
+    }
+});
+
+
+// Function to create a slug from a string
+function createSlug(text) {
+    return text
+        .toLowerCase() 
+        .replace(/\s+/g, '-') 
+        .replace(/[^a-z0-9-]/g, '') 
+        .replace(/-+/g, '-') 
+        .substring(0, 50); 
+}
+
+
+
+// Local code---------------------------
+
+function isLocalStorageSupported() {
+    try {
+        localStorage.setItem('test', 'test');
+        localStorage.removeItem('test');
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+
+if (isLocalStorageSupported()) {
+    document.getElementById('project').style.display = 'block';
+} else {
+    alert('Your browser does not support local storage. The project cannot be displayed.');
+}
+
+
+
+
+
+
