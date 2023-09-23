@@ -34,21 +34,21 @@ function generateUniqueSlug(taskName) {
     const slugElements = document.querySelectorAll('.slug');
 
     let isUnique = true;
-        // Check if the slug is unique
-        for (const element of slugElements) {
-            if (element.textContent === slug) {
-                isUnique = false;
-                break;
-            }
+    // Check if the slug is unique
+    for (const element of slugElements) {
+        if (element.textContent === slug) {
+            isUnique = false;
+            break;
         }
-    
-        if (!isUnique) {
-            showAlert("Task name is not unique. Please enter another name.", "danger");
-            return null; 
-        }
-    
-        return slug;
     }
+
+    if (!isUnique) {
+        showAlert("Task name is not unique. Please enter another name.", "danger");
+        return null;
+    }
+
+    return slug;
+}
 
 
 // ADD data code ---------------------------------//
@@ -59,9 +59,9 @@ document.querySelector("#Task-form").addEventListener("submit", (e) => {
     const Task = document.querySelector("#Task").value;
     const Day = document.querySelector("#Day").value;
     const Time = document.querySelector("#Time").value;
-    
+
     const Slug = generateUniqueSlug(Task); // Generate and check slug for uniqueness
-    
+
 
     if (Slug === null) {
         // If slug is not unique, do not proceed
@@ -72,8 +72,8 @@ document.querySelector("#Task-form").addEventListener("submit", (e) => {
     if (Task == "" || Day == "" || Time == "") {
         showAlert("Please fill all fields", "danger");
     } else {
-        
-        
+
+
 
         if (selectedRow == null) {
             const list = document.querySelector("#Task-list");
@@ -113,7 +113,7 @@ document.querySelector("#Task-list").addEventListener("click", (e) => {
         document.querySelector("#Task").value = selectedRow.children[0].textContent;
         document.querySelector("#Day").value = selectedRow.children[1].textContent;
         document.querySelector("#Time").value = selectedRow.children[2].textContent;
-       
+
     }
 
 });
@@ -131,11 +131,11 @@ document.querySelector("#Task-list").addEventListener("click", (e) => {
 // Function to create a slug from a string
 function createSlug(text) {
     return text
-        .toLowerCase() 
-        .replace(/\s+/g, '-') 
-        .replace(/[^a-z0-9-]/g, '') 
-        .replace(/-+/g, '-') 
-        .substring(0, 50); 
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9-]/g, '')
+        .replace(/-+/g, '-')
+        .substring(0, 50);
 }
 
 
