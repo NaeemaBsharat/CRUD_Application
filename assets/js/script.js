@@ -137,22 +137,7 @@ function createSlug(text) {
 
 
 
-function isLocalStorageSupported() {
-    try {
-        localStorage.setItem('test', 'test');
-        localStorage.removeItem('test');
-        return true;
-    } catch (e) {
-        return false;
-    }
-}
 
-
-if (isLocalStorageSupported()) {
-    document.getElementById('project').style.display = 'block';
-} else {
-    alert('Your browser does not support local storage. The project cannot be displayed.');
-}
 
 
 
