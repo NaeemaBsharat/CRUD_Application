@@ -1,9 +1,16 @@
-let selectedRow = null;
+
+
+
+if (typeof(Storage) !== "undefined") {
+
+
+    let selectedRow = null;
+    const taskMap = {};
 
 
 
 
-function showAlert(message, className) {
+    function showAlert(message, className) {
     const div = document.createElement("div");
     div.className = `alert alert-${className}`;
 
@@ -15,72 +22,51 @@ function showAlert(message, className) {
 
     setTimeout(() => document.querySelector(".alert").remove(), 3000);
 
-}
+    }
 
 
 
-function clearFields() {
+    function clearFields() {
     document.querySelector("Task").value = "";
     document.querySelector("Day").value = "";
     document.querySelector("Time").value = "";
 
-}
+    }
 
+    function generateSlug(taskName) {
+        
+        return taskName.toLowerCase().replace(/\s+/g, '-');
+    }
 
-
-
-function generateUniqueSlug(taskName) {
-    const slug = createSlug(taskName);
-    const slugElements = document.querySelectorAll('.slug');
-
-    let isUnique = true;
+    function isTaskUnique(slug) {
     
-    for (const element of slugElements) {
-        if (element.textContent === slug) {
-            isUnique = false;
-            break;
-        }
+        return !(slug in taskMap);
     }
 
-    if (!isUnique) {
-        showAlert("Task name is not unique. Please enter another name.", "danger");
-        return null;
-    }
-
-    return slug;
-}
-
-
-
-
-document.querySelector("#Task-form").addEventListener("submit", (e) => {
+    document.querySelector("#Task-form").addEventListener("submit", (e) => {
     e.preventDefault();
 
     const Task = document.querySelector("#Task").value;
     const Day = document.querySelector("#Day").value;
     const Time = document.querySelector("#Time").value;
-
-    const Slug = generateUniqueSlug(Task); 
-
-
-    if (Slug === null) {
-        
-        return;
-    }
-
+    const slug = generateSlug(Task);
 
     if (Task == "" || Day == "" || Time == "") {
         showAlert("Please fill all fields", "danger");
     } else {
 
+     if (!isTaskUnique(slug)) {
+            showAlert("Task already exists", "danger");
+        }
 
 
+      else {
         if (selectedRow == null) {
             const list = document.querySelector("#Task-list");
             const row = document.createElement("tr");
 
             row.innerHTML = `
-                <td class="slug">${Slug}</td>
+                <td>${Task}</td>
                 <td>${Day}</td>
                 <td>${Time}</td>
                 <td>
@@ -89,21 +75,26 @@ document.querySelector("#Task-form").addEventListener("submit", (e) => {
                 </td>
             `;
             list.appendChild(row);
+            taskMap[slug] = true;
             selectedRow = null;
             showAlert("Task Added", "success");
         } else {
+            taskMap[slug] = true;
             selectedRow.children[0].textContent = Task;
             selectedRow.children[1].textContent = Day;
             selectedRow.children[2].textContent = Time;
             selectedRow = null;
             showAlert("Task Edited", "success");
+            document.querySelector("#submit-button").value = "ADD";
         }
         clearFields();
     }
-});
+}
+    });
 
 
-document.querySelector("#Task-list").addEventListener("click", (e) => {
+
+    document.querySelector("#Task-list").addEventListener("click", (e) => {
     target = e.target;
     if (target.classList.contains("edit")) {
         selectedRow = target.parentElement.parentElement;
@@ -111,26 +102,26 @@ document.querySelector("#Task-list").addEventListener("click", (e) => {
         document.querySelector("#Day").value = selectedRow.children[1].textContent;
         document.querySelector("#Time").value = selectedRow.children[2].textContent;
 
+        document.querySelector("#submit-button").value = "EDIT";
+
     }
 
-});
+    });
 
-
-document.querySelector("#Task-list").addEventListener("click", (e) => {
-    target = e.target;
-    if (target.classList.contains("delete")) {
-        target.parentElement.parentElement.remove();
-        showAlert("Task Deleted", "danger");
+   
+    document.querySelector("#Task-list").addEventListener("click", (e) => {
+        target = e.target;
+        if (target.classList.contains("delete")) {
+           // const slugToDelete = generateSlug(selectedRow.children[0].textContent);
+            //delete taskMap[slugToDelete]; 
+            target.parentElement.parentElement.remove();
+            showAlert("Task Deleted", "danger");
     }
-});
+    });
+}
+else {
+    alert("Your browser does not support local storage. Please consider using a different browser.");
 
-function createSlug(text) {
-    return text
-        .toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^a-z0-9-]/g, '')
-        .replace(/-+/g, '-')
-        .substring(0, 50);
 }
 
 
