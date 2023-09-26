@@ -1,7 +1,7 @@
-var selectedRow = null;
+let selectedRow = null;
 
 
-// showing alerts--------------------------------//
+
 
 function showAlert(message, className) {
     const div = document.createElement("div");
@@ -17,7 +17,7 @@ function showAlert(message, className) {
 
 }
 
-// clear all data code------------------------------//
+
 
 function clearFields() {
     document.querySelector("Task").value = "";
@@ -27,14 +27,14 @@ function clearFields() {
 }
 
 
-// Function to generate a unique slug
+
 
 function generateUniqueSlug(taskName) {
-    let slug = createSlug(taskName);
+    const slug = createSlug(taskName);
     const slugElements = document.querySelectorAll('.slug');
 
     let isUnique = true;
-    // Check if the slug is unique
+    
     for (const element of slugElements) {
         if (element.textContent === slug) {
             isUnique = false;
@@ -51,7 +51,7 @@ function generateUniqueSlug(taskName) {
 }
 
 
-// ADD data code ---------------------------------//
+
 
 document.querySelector("#Task-form").addEventListener("submit", (e) => {
     e.preventDefault();
@@ -60,11 +60,11 @@ document.querySelector("#Task-form").addEventListener("submit", (e) => {
     const Day = document.querySelector("#Day").value;
     const Time = document.querySelector("#Time").value;
 
-    const Slug = generateUniqueSlug(Task); // Generate and check slug for uniqueness
+    const Slug = generateUniqueSlug(Task); 
 
 
     if (Slug === null) {
-        // If slug is not unique, do not proceed
+        
         return;
     }
 
@@ -103,9 +103,6 @@ document.querySelector("#Task-form").addEventListener("submit", (e) => {
 });
 
 
-
-// Edit Data code---------------------//
-
 document.querySelector("#Task-list").addEventListener("click", (e) => {
     target = e.target;
     if (target.classList.contains("edit")) {
@@ -118,7 +115,7 @@ document.querySelector("#Task-list").addEventListener("click", (e) => {
 
 });
 
-// Delete data code------------------------//
+
 document.querySelector("#Task-list").addEventListener("click", (e) => {
     target = e.target;
     if (target.classList.contains("delete")) {
@@ -127,8 +124,6 @@ document.querySelector("#Task-list").addEventListener("click", (e) => {
     }
 });
 
-
-// Function to create a slug from a string
 function createSlug(text) {
     return text
         .toLowerCase()
@@ -140,7 +135,7 @@ function createSlug(text) {
 
 
 
-// Local code---------------------------
+
 
 function isLocalStorageSupported() {
     try {
